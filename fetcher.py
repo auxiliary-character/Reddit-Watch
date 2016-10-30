@@ -25,8 +25,13 @@ def fetch_old_posts():
 def main():
     db.create_db()
     while True:
-        fetch_new_posts()
-        fetch_old_posts()
+        try:
+            fetch_new_posts()
+            fetch_old_posts()
+        except Exception as e:
+            print(e)
+            print("Error! Skipping.")
+            time.sleep(10)
 
 if __name__ == "__main__":
     main()
