@@ -2,9 +2,16 @@
 import db
 import praw
 import time
+import json
 
-r = praw.Reddit("Reddit Watch by /u/auxiliary-character v 1.0.0")
-r_all = r.get_subreddit("all")
+with open("config.json") as f:
+    config = json.load(f)
+
+r = praw.Reddit(client_id=config["id"],
+                client_secret=config["secret"],
+                user_agent="linux:spez-oversight-committee:2.0.0 (by /u/auxiliary-character)")
+
+r_all = r.subreddit("all")
 
 def ignore_exception_call(f, *args):
     try:
@@ -15,7 +22,7 @@ def ignore_exception_call(f, *args):
         time.sleep(10)
 
 def fetch_post(postid):
-    p = r.get_submission(submission_id = postid)
+    p = r.submission(id = postid)
     db.insert_point(p)
     db.update_post(postid)
     if (time.time() - p.created_utc) > 600 and p.score < 2:
@@ -23,7 +30,7 @@ def fetch_post(postid):
 
 def fetch_new_posts():
     print("Fetching new posts.", time.time())
-    for post in r_all.get_new():
+    for post in r_all.new():
         if not db.get_post(post.id):
             db.insert_post(post)
 

@@ -1,3 +1,6 @@
 *__pycache__/
 *.swp
 *.db
+*.db-journal
+old/
+config.json
