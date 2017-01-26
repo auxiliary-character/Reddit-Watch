@@ -3,6 +3,7 @@ import db
 import praw
 import time
 import json
+import traceback
 
 with open("config.json") as f:
     config = json.load(f)
@@ -17,7 +18,7 @@ def ignore_exception_call(f, *args):
     try:
         f(*args)
     except Exception as e:
-        print(e)
+        traceback.print_exc()
         print("Error! Skipping.")
         time.sleep(10)
 
