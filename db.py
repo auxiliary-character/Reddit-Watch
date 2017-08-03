@@ -52,7 +52,7 @@ def get_subreddit_posts(subreddit):
 
 def get_points(postid):
     cu = db.cursor()
-    return c.execute("select * from posts where postid=?", (postid,))
+    return cu.execute("select * from posts where postid=?", (postid,))
 
 def update_post(postid):
     cu = db.cursor()
